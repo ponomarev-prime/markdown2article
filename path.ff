@@ -1,2 +1,6 @@
-/home/alex/Documents/CODE/markdown2article
-/home/alex/Documents/CODE/markdown2article/path-finder.py
+[PATH]
+cwd_path = /home/alex/Documents/CODE/markdown2article
+scr_path = /home/alex/Documents/CODE/markdown2article/path-finder.py
+art_path = /home/alex/Documents/CODE/markdown2article/data/markdown_origin
+htm_path = /home/alex/Documents/CODE/markdown2article/data/html
+

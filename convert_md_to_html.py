@@ -1,10 +1,8 @@
 import pypandoc
 import sys
+import os
+import configparser
 
-# using: $ python3 convert_md_to_html.py index.md index.html
-args = sys.argv[1:]
-inputFile = args[0]
-outputFile = args[1]
 
 def titleFinder(input_md_file):
     # Чтение содержимого .md файла
@@ -44,5 +42,58 @@ def convMarkdownToHtml(inputFile, outputFile):
     with open(output_html_file, 'w', encoding='utf-8') as html_file:
         html_file.write(html_content)
 
+def articleHandler(art_name):
+    config = configparser.ConfigParser()
+    config.read('path.ff')
+    articlesPath = config.get('PATH', 'art_path')
+    
+    art_path = f"{articlesPath}/{art_name}" 
+    existChecker(art_path, "dir")
+    
+    img_path = f"{articlesPath}/{art_name}/.img"
+    existChecker(img_path, "dir")
+
+    article = art_path
+    images = [(f"{img_path}/{f}") for f in os.listdir(img_path) if os.path.isfile(f"{img_path}/{f}")]
+    
+    if len(images) == 0:
+        type = "noimg"
+        print(f"cost of imgs :: {len(images)} :: {type}")
+    elif len(images) == 1:
+            type = "oneimg"
+            print(f"cost of imgs :: {len(images)} :: {type}")
+    elif len(images) > 1:
+            type = "manyimg"
+            print(f"cost of imgs :: {len(images)} :: {type}")
+    else:
+        type = ""
+        
+    return article, images, type
+
+
+def existChecker(path, type):
+    if type == "dir":
+        print(f"type dir :: {path}")
+        if os.path.isdir(path):
+            print(f"ok :: {path} is dir")
+        else:
+            print(f"fail :: {path} is not dir")
+            exit(1)  
+    elif type == "file":
+        print(f"type file :: {path}")
+        if os.path.isfile(path):
+            print(f"ok :: {path} is file")
+        else:
+            print(f"fail :: {path} is not file")
+            exit(1)  
+    else:
+        print(f"err :: {path} | {type}")     
+
+    
 if __name__ == "__main__":
-    convMarkdownToHtml(inputFile, outputFile)
+    args = sys.argv[1:]
+    article = args[0]
+    
+    
+    print(articleHandler(article)) # "test_article"
+    
